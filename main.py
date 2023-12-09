@@ -1,6 +1,3 @@
-
-
-# TODO: Create another paddle
 # TODO: Create the ball
 # TODO: Create the movement of the ball
 # TODO: Detect collision with wall and bounce
@@ -27,13 +24,16 @@ board_game = BoardGame(height=HEIGHT)
 half_screen_height = board_game.half_screen_height - 25
 half_screen_width = WIDTH / 2 - 30
 
-
+# TODO: Create another paddle
 player1_paddle = Paddle(-half_screen_width, half_screen_height)
+player2_paddle = Paddle(half_screen_width, half_screen_height)
 
-# TODO: Create the paddle movement
+
 screen.listen()
-screen.onkeypress(fun=player1_paddle.up, key="Up")
-screen.onkeypress(fun=player1_paddle.down, key="Down")
+screen.onkeypress(fun=player1_paddle.up, key="w")
+screen.onkeypress(fun=player1_paddle.down, key="s")
+screen.onkeypress(fun=player2_paddle.up, key="Up")
+screen.onkeypress(fun=player2_paddle.down, key="Down")
 
 game_over = False
 while not game_over:
