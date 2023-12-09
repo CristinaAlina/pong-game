@@ -16,6 +16,7 @@ class BoardGame(Turtle):
         self.dot_half_screen()
 
     def dot_half_screen(self):
+        """Draws a dot line in the middle of the screen"""
         for _ in range(self.half_screen_height, -self.half_screen_height, -20):
             self.pendown()
             self.forward(10)
