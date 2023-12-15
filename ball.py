@@ -1,5 +1,4 @@
 from turtle import Turtle
-import random
 
 
 class Ball(Turtle):
@@ -7,28 +6,41 @@ class Ball(Turtle):
         super().__init__()
         self.shape("circle")
         self.color("indigo")
-        self.speed("fastest")
         self.penup()
-        self.shapesize(stretch_wid=1, stretch_len=1, outline=1)
-        self.set_random_location()
-
-    def set_random_location(self):
-        angles_list = [25, 35, 45, 70, 160, 240, 300]
-        x = 0
-        y = random.randint(-270, 270)
-        self.goto(x, y)
-        angle = random.choice(angles_list)
-        self.setheading(angle)
-
-    def is_collision_paddle(self, paddle_body):
-        """Returns True if it detects collision with paddle, or False otherwise"""
-        for paddle_square in paddle_body:
-            if self.distance(paddle_square) < 22:
-                return True
-        return False
+        self.goto(0, 0)
+        self.move_x = 10
+        self.move_y = 10
+        self.speed_move = 40
 
     def move(self):
-        self.forward(15)
+        new_x = self.xcor() + self.move_x
+        new_y = self.ycor() + self.move_y
+        self.goto(new_x, new_y)
 
-    def is_out_of_area(self, width, height):
-        return self.xcor() > width or self.xcor() < -width or self.ycor() > height or self.ycor() < -height
+    def bounce_x(self):
+        """Change x direction to the opposite direction"""
+        self.move_x *= -1
+
+    def bounce_y(self):
+        """Change y direction to the opposite direction"""
+        self.move_y *= -1
+
+    def detect_collision_wall(self):
+        """Bounce on y-coordinate if it detects collision with top or bottom wall"""
+        if self.ycor() > 330 or self.ycor() < -325:
+            self.bounce_y()
+
+    def detect_collision_paddle(self, paddle_1, paddle_2):
+        """Bounce on x-coordinate if it detects collision with left paddle or right paddle and
+        increase the ball speed on paddle collision"""
+        if ((self.distance(paddle_1) < 50 and self.xcor() < -395) or
+                (self.distance(paddle_2) < 50 and self.xcor() > 395)):
+            self.bounce_x()
+            self.speed_move *= 0.9
+
+    def reset_location(self):
+        """Resets the ball location to (0,0), set ball heading to the other player
+        and change the ball speed to default"""
+        self.home()
+        self.speed_move = 40
+        self.bounce_x()
